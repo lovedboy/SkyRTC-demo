@@ -277,8 +277,8 @@ var SkyRTC = function() {
     skyrtc.prototype.sendAnswer = function(socketId, sdp) {
         var pc = this.peerConnections[socketId];
         var that = this;
-        pc.setRemoteDescription(new nativeRTCSessionDescription(sdp), function(){
-          pc.createAnswer(function(session_desc) {
+        pc.setRemoteDescription(new nativeRTCSessionDescription(sdp));
+        pc.createAnswer(function(session_desc) {
             pc.setLocalDescription(session_desc);
             that.socket.send(JSON.stringify({
                 "eventName": "__answer__",
@@ -289,7 +289,7 @@ var SkyRTC = function() {
             }));
         }, function(error) {
             console.log(error);
-        })});
+        });
     };
 
     //接收到answer类型信令后将对方的session描述写入PeerConnection中

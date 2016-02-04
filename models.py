@@ -102,7 +102,7 @@ class WSEvent(object):
                 "data": {
                     "socketId": socket.client_id, },
             }))
-            ids.append(socket.client_id)
+            ids.append(conn.client_id)
 
         socket.write_message(json.dumps({
             "eventName": "_peers",
@@ -125,7 +125,7 @@ class WSEvent(object):
             "data": {
                 "label": msg['label'],
                 "candidate": msg['candidate'],
-                "socketId": soc.client_id,
+                "socketId": socket.client_id,
             }
         }))
 
@@ -140,7 +140,7 @@ class WSEvent(object):
             "eventName": "_offer",
             "data": {
                 "sdp": msg['sdp'],
-                "socketId": soc.client_id, },
+                "socketId": socket.client_id, },
         }))
         self.emit('offer', msg, socket)
 
@@ -154,7 +154,7 @@ class WSEvent(object):
             "eventName": "_answer",
             "data": {
                 "sdp": msg['sdp'],
-                "socketId": soc.client_id, },
+                "socketId": socket.client_id, },
         }))
         self.emit('answer', msg, socket)
 
