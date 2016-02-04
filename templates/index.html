@@ -85,7 +85,7 @@
   <div id="files">
   </div>
 </body>
-<script type="text/javascript" src="/SkyRTC-client.js"></script>
+<script type="text/javascript" src="/static/SkyRTC-client.js"></script>
 <script type="text/javascript">
   var videos = document.getElementById("videos");
   var sendBtn = document.getElementById("sendBtn");
@@ -192,6 +192,7 @@
   });
   //接收到其他用户的视频流
   rtc.on('pc_add_stream', function(stream, socketId) {
+    console.log( socketId + " add other stream");
     var newVideo = document.createElement("video"),
         id = "other-" + socketId;
     newVideo.setAttribute("class", "other");
@@ -214,6 +215,6 @@
     msgs.appendChild(p);
   });
   //连接WebSocket服务器
-  rtc.connect("ws:" + window.location.href.substring(window.location.protocol.length).split('#')[0], window.location.hash.slice(1));
+  rtc.connect("wss://"+ window.location.host+ "/ws/{{client_id}}", "{{ room }}");
 </script>
 </html>

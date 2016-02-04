@@ -89,7 +89,7 @@ var SkyRTC = function() {
         socket = this.socket = new WebSocket(server);
         socket.onopen = function() {
             socket.send(JSON.stringify({
-                "eventName": "__join",
+                "eventName": "__join__",
                 "data": {
                     "room": room
                 }
@@ -102,6 +102,7 @@ var SkyRTC = function() {
             if (json.eventName) {
                 that.emit(json.eventName, json.data);
             } else {
+                console.log(json);
                 that.emit("socket_receive_message", socket, json);
             }
         };
@@ -249,7 +250,7 @@ var SkyRTC = function() {
                 return function(session_desc) {
                     pc.setLocalDescription(session_desc);
                     that.socket.send(JSON.stringify({
-                        "eventName": "__offer",
+                        "eventName": "__offer__",
                         "data": {
                             "sdp": session_desc,
                             "socketId": socketId
@@ -276,11 +277,11 @@ var SkyRTC = function() {
     skyrtc.prototype.sendAnswer = function(socketId, sdp) {
         var pc = this.peerConnections[socketId];
         var that = this;
-        pc.setRemoteDescription(new nativeRTCSessionDescription(sdp));
-        pc.createAnswer(function(session_desc) {
+        pc.setRemoteDescription(new nativeRTCSessionDescription(sdp), function(){
+          pc.createAnswer(function(session_desc) {
             pc.setLocalDescription(session_desc);
             that.socket.send(JSON.stringify({
-                "eventName": "__answer",
+                "eventName": "__answer__",
                 "data": {
                     "socketId": socketId,
                     "sdp": session_desc
@@ -288,7 +289,7 @@ var SkyRTC = function() {
             }));
         }, function(error) {
             console.log(error);
-        });
+        })});
     };
 
     //接收到answer类型信令后将对方的session描述写入PeerConnection中
@@ -317,7 +318,7 @@ var SkyRTC = function() {
         pc.onicecandidate = function(evt) {
             if (evt.candidate)
                 that.socket.send(JSON.stringify({
-                    "eventName": "__ice_candidate",
+                    "eventName": "__ice_candidate__",
                     "data": {
                         "label": evt.candidate.sdpMLineIndex,
                         "candidate": evt.candidate.candidate,
