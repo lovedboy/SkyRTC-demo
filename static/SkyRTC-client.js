@@ -8,7 +8,12 @@ var SkyRTC = function() {
     var iceServer = {
         "iceServers": [{
             "url": "stun:stun.l.google.com:19302"
-        }]
+        },
+		{
+			"url": 'turn:numb.viagenie.ca',
+			"credential": 'muazkh',
+			"username": 'webrtc@live.com'
+		}]
     };
     var packetSize = 1000;
 
