@@ -80,7 +80,7 @@
     <button id="sendBtn" class="sendBtn">发送</button>
   </div>
   <div id="videos">
-    <video id="me" autoplay></video>
+    <video id="me" autoplay="true" muted="muted"></video>
   </div>
   <div id="files">
   </div>
@@ -184,7 +184,7 @@
   //创建本地视频流成功
   rtc.on("stream_created", function(stream) {
     document.getElementById('me').src = URL.createObjectURL(stream);
-    document.getElementById('me').play();
+    //document.getElementById('me').play();
   });
   //创建本地视频流失败
   rtc.on("stream_create_error", function() {
