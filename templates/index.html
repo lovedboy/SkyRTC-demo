@@ -177,8 +177,14 @@
   rtc.on("connected", function(socket) {
     //创建本地视频流
     rtc.createStream({
-      "video": true,
-      "audio": true
+      "audio": true,
+      "video": {mandatory: {
+          chromeMediaSource: 'screen',
+          maxWidth: 1280,
+          maxHeight: 720
+      },
+          optional: []
+      }
     });
   });
   //创建本地视频流成功
