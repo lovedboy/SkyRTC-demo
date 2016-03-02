@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>SkyRTC聊天室Demo</title>
+  <script src="https://cdn.WebRTC-Experiment.com/getScreenId.js"></script>
   <style type="text/css">
     html, body {
       width: 100%;
@@ -92,7 +93,26 @@
   var msgs = document.getElementById("msgs");
   var sendFileBtn = document.getElementById("sendFileBtn");
   var files = document.getElementById("files");
+
   var rtc = SkyRTC();
+
+getScreenId(function (error, sourceId, screen_constraints) {
+    // error    == null || 'permission-denied' || 'not-installed' || 'installed-disabled' || 'not-chrome'
+    // sourceId == null || 'string' || 'firefox'
+
+    // navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
+    // navigator.getUserMedia(screen_constraints, function (stream) {
+        // document.getElementById('webcam').src = window.URL.createObjectURL(stream);
+    // }, function (error) {
+        // console.error(error);
+    // });
+  console.log(screen_constraints);
+  rtc.test = screen_constraints;
+
+  
+});
+
+  
 
   /**********************************************************/
   sendBtn.onclick = function(event){
@@ -173,13 +193,29 @@
       rtc.sendFileRefuse(sendId);
     }
   });
+
+
+
   //成功创建WebSocket连接
   rtc.on("connected", function(socket) {
     //创建本地视频流
-    rtc.createStream({
-      "video": true,
-      "audio": true
-    });
+
+    // rtc.createStream({
+    //   "video": screen_constraints,
+    //   "audio": false
+    // });
+
+    function wait(){
+      if(rtc.test){
+        rtc.createStream(rtc.test);
+      }else{
+        window.setTimeout(wait, 1000);
+      }
+    }
+  
+      
+    wait();
+
   });
   //创建本地视频流成功
   rtc.on("stream_created", function(stream) {
