@@ -210,7 +210,10 @@ class ClientWSConnection(websocket.WebSocketHandler):
         logging.debug("WebSocket opened. ClientID = %s, ROOMID = %s" % (self.client_id, self.room_id))
 
     def on_message(self, message):
-        msg = json.loads(message)
+        try:
+            msg = json.loads(message)
+        except:
+            return
         logging.debug("room_id: {} client_id:{} send message:{}".format(self.room_id, self.client_id, msg))
         event_name = msg.get("eventName", None)
         if event_name is not None:
