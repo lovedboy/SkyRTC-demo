@@ -81,9 +81,10 @@ class WSEvent(object):
     def emit(self, event_name, msg, socket):
         func = getattr(self, event_name, None)
         if func is None:
-            logging.debug("WSEvent don't implement {} method".format(event_name))
+            # logging.debug("WSEvent don't implement {} method".format(event_name))
+            pass
         else:
-            logging.debug("WSEvent will run {} method".format(event_name))
+            # logging.debug("WSEvent will run {} method".format(event_name))
             try:
                 func(self, msg, socket)
             except TypeError:
